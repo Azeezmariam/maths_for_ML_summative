@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel
 import pandas as pd
 import pickle as pk
+import uvicorn
 
 # Load the model
 with open('model.pkl', 'rb') as file:
