@@ -17,7 +17,7 @@ class StartupData(BaseModel):
 
 @app.get('/', status_code=status.HTTP_200_OK)
 async def home():
-    return 'Hello LOLA'
+    return {'message': 'Hello LOLA'}
 
 @app.post('/predict', status_code=status.HTTP_200_OK)
 async def predict(data: StartupData):
@@ -34,16 +34,16 @@ async def predict(data: StartupData):
         features = features.drop(columns=categorical_features)
         features = pd.concat([features, categorical_encoded], axis=1)
 
-        # Define columns
-        expected_columns = ['Research_And_Development', 'Administration', 'Marketing_Spend', 'State', 'Profit']  
+        # Define expected columns
+        expected_columns = ['Research_And_Development', 'Administration', 'Marketing_Spend', 'State_California', 'State_Florida']
 
-        # columns for the model
-        missing_cols = set('Research_And_Development', 'Administration', 'Marketing_Spend', 'State', 'Profit') - set(features.columns)
+        # Add missing columns with default value 0
+        missing_cols = set(expected_columns) - set(features.columns)
         for col in missing_cols:
             features[col] = 0
 
         # Order columns as expected by the model
-        features = features['Research_And_Development', 'Administration', 'Marketing_Spend', 'State', 'Profit']
+        features = features[expected_columns]
 
         # Make prediction
         prediction = model.predict(features)
@@ -51,7 +51,6 @@ async def predict(data: StartupData):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Something went wrong: {e}")
 
-if __name__ == "__main__":
-    config = uvicorn.Config(app, host="127.0.0.1", port=8000)
-    server = uvicorn.Server(config)
-    server.run()
+if _name_ == "_main_":
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8000)
