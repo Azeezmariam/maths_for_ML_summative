@@ -35,7 +35,7 @@ async def predict(data: StartupData):
         features = pd.concat([features, categorical_encoded], axis=1)
 
         # Define expected columns
-        expected_columns = ['Research_And_Development', 'Administration', 'Marketing_Spend', 'State_California', 'State_Florida']
+        expected_columns = ['Research_And_Development', 'Administration', 'Marketing_Spend', 'State', 'Profit']
 
         # Add missing columns with default value 0
         missing_cols = set(expected_columns) - set(features.columns)
