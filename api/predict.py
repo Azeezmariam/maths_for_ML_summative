@@ -1,6 +1,5 @@
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel
-import numpy as np
 import pandas as pd
 import pickle as pk
 
@@ -25,7 +24,7 @@ async def predict(data: StartupData):
     try:
         # Convert input data to DataFrame
         input_data = pd.DataFrame([data.dict()])
-        
+
         # Prepare features
         categorical_features = ['State']
         features = input_data.copy()
@@ -35,14 +34,17 @@ async def predict(data: StartupData):
         features = features.drop(columns=categorical_features)
         features = pd.concat([features, categorical_encoded], axis=1)
 
-        # Ensure features have the correct columns for the model
-        missing_cols = set(model.feature_names_in_) - set(features.columns)
+        # Define columns
+        expected_columns = ['Research_And_Development', 'Administration', 'Marketing_Spend', 'State', 'Profit']  
+
+        # columns for the model
+        missing_cols = set('Research_And_Development', 'Administration', 'Marketing_Spend', 'State', 'Profit') - set(features.columns)
         for col in missing_cols:
             features[col] = 0
 
         # Order columns as expected by the model
-        features = features[model.feature_names_in_]
-        
+        features = features['Research_And_Development', 'Administration', 'Marketing_Spend', 'State', 'Profit']
+
         # Make prediction
         prediction = model.predict(features)
         return {'prediction': prediction[0]}
