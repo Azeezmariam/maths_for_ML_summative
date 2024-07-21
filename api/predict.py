@@ -15,6 +15,7 @@ class StartupData(BaseModel):
     Administration: float
     Marketing_Spend: float
     State: str
+    Profit:float
 
 @app.get('/', status_code=status.HTTP_200_OK)
 async def home():
@@ -35,7 +36,7 @@ async def predict(data: StartupData):
         features = features.drop(columns=categorical_features)
         features = pd.concat([features, categorical_encoded], axis=1)
 
-        # Define expected columns
+        # Define expected columns (excluding 'Profit')
         expected_columns = ['Research_And_Development', 'Administration', 'Marketing_Spend', 'State', 'Profit']
 
         # Add missing columns with default value 0
@@ -52,6 +53,5 @@ async def predict(data: StartupData):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Something went wrong: {e}")
 
-if _name_ == "_main_":
-    import uvicorn
+if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
