@@ -20,7 +20,7 @@ class PredictionRequest(BaseModel):
 @app.post('/predict')
 def predict(request: PredictionRequest):
     try:
-        # Create a DataFrame from the input data
+        # DataFrame from the input data
         input_data = pd.DataFrame([{
             'Research_And_Development': request.Research_And_Development,
             'Administration': request.Administration,
@@ -28,13 +28,13 @@ def predict(request: PredictionRequest):
             'State': request.State
         }])
         
-        # Manually specify expected columns
+        # Expected columns
         expected_columns = [
             'Research_And_Development', 'Administration', 'Marketing_Spend',
-            'State_California', 'State_Florida'  # Ensure these match your one-hot encoded column names
+            'State_California', 'State_Florida'  
         ]
         
-        # Apply preprocessing
+        # Preprocessing
         x = input_data.copy()
         categorical_features = ['State']
 
