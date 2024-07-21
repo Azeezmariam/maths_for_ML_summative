@@ -54,5 +54,3 @@ print(model_score)
 #Saving my model using pickle
 with open('model.pkl', 'wb') as file:
     pk.dump(model, file)
-
-
