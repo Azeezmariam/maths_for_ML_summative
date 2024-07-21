@@ -52,5 +52,6 @@ async def predict(data: StartupData):
         raise HTTPException(status_code=500, detail=f"Something went wrong: {e}")
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    config = uvicorn.Config(app, host="127.0.0.1", port=8000)
+    server = uvicorn.Server(config)
+    server.run()
