@@ -3,7 +3,6 @@ from pydantic import BaseModel
 import numpy as np
 import pandas as pd
 import pickle as pk
-import uvicorn
 
 # Load the model
 with open('model.pkl', 'rb') as file:
@@ -49,6 +48,3 @@ async def predict(data: StartupData):
         return {'prediction': prediction[0]}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Something went wrong: {e}")
-
-if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
